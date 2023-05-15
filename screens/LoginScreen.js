@@ -1,166 +1,166 @@
-import React, { useState } from 'react';
-import { Text, StyleSheet } from 'react-native';
-import { Formik } from 'formik';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
-import { View, TextInput, Logo, Button, FormErrorMessage } from '../components';
-import { Images, Colors, auth } from '../config';
-import { useTogglePasswordVisibility } from '../hooks';
-import { loginValidationSchema } from '../utils';
-
-export const LoginScreen = ({ navigation }) => {
-  const [errorState, setErrorState] = useState('');
-  const { passwordVisibility, handlePasswordVisibility, rightIcon } =
-    useTogglePasswordVisibility();
-
-  const handleLogin = values => {
-    const { email, password } = values;
-    signInWithEmailAndPassword(auth, email, password).catch(error =>
-      setErrorState(error.message)
-    );
+import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { RootSiblingParent } from "react-native-root-siblings";
+import Toast from "react-native-root-toast";
+import verifyUserLogin from "../services/verifyUserLogin";
+import { useHouseDetails } from "../contexts/useHouseData";
+// import { useUser } from "../../contexts/userContext";
+// import { useHouseDetails } from "../contexts/useHouseData";
+const LoginScreen = () => {
+  const { updateHouse } = useHouseDetails();
+  const [email, setEmail] = useState("");
+  const { navigate } = useNavigation();
+  const [loading, setLoading] = useState(false);
+  const [toastText, setToastText] = useState("Logged In Successfully!");
+  // const { user } = useUser();
+  const [password, setPassword] = useState("");
+  const handleLogin = async () => {
+    // console.log({ whatever });
+    // return;
+    setLoading(true);
+    const DbUser = await verifyUserLogin(email, password);
+    // await getCities();
+    console.log({ DbUser });
+    setLoading(false);
+    let toastText = "User Not Found.";
+    if (DbUser) {
+      updateHouse(DbUser);
+      toastText = "User Logged In Successfully.";
+      navigate("Smentry Home", {});
+    }
+    Toast.show(toastText, {
+      duration: Toast.durations.LONG,
+      backgroundColor: "gray",
+    });
   };
   return (
-    <>
-      <View isSafe style={styles.container}>
-        <KeyboardAwareScrollView enableOnAndroid={true}>
-          {/* LogoContainer: consits app logo and screen title */}
-          <View style={styles.logoContainer}>
-            <Logo uri={Images.logo} />
-            <Text style={styles.screenTitle}>Welcome back!</Text>
-          </View>
-          <Formik
-            initialValues={{
-              email: '',
-              password: ''
+    <RootSiblingParent>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+      >
+        <View style={styles.headingContainer}>
+          <Text
+            style={{
+              fontFamily: "Courier New",
+              fontSize: 26,
+              fontWeight: "400",
             }}
-            validationSchema={loginValidationSchema}
-            onSubmit={values => handleLogin(values)}
           >
-            {({
-              values,
-              touched,
-              errors,
-              handleChange,
-              handleSubmit,
-              handleBlur
-            }) => (
-              <>
-                {/* Input fields */}
-                <TextInput
-                  name='email'
-                  leftIconName='email'
-                  placeholder='Enter email'
-                  autoCapitalize='none'
-                  keyboardType='email-address'
-                  textContentType='emailAddress'
-                  autoFocus={true}
-                  value={values.email}
-                  onChangeText={handleChange('email')}
-                  onBlur={handleBlur('email')}
-                />
-                <FormErrorMessage
-                  error={errors.email}
-                  visible={touched.email}
-                />
-                <TextInput
-                  name='password'
-                  leftIconName='key-variant'
-                  placeholder='Enter password'
-                  autoCapitalize='none'
-                  autoCorrect={false}
-                  secureTextEntry={passwordVisibility}
-                  textContentType='password'
-                  rightIcon={rightIcon}
-                  handlePasswordVisibility={handlePasswordVisibility}
-                  value={values.password}
-                  onChangeText={handleChange('password')}
-                  onBlur={handleBlur('password')}
-                />
-                <FormErrorMessage
-                  error={errors.password}
-                  visible={touched.password}
-                />
-                {/* Display Screen Error Mesages */}
-                {errorState !== '' ? (
-                  <FormErrorMessage error={errorState} visible={true} />
-                ) : null}
-                {/* Login button */}
-                <Button style={styles.button} onPress={handleSubmit}>
-                  <Text style={styles.buttonText}>Login</Text>
-                </Button>
-              </>
-            )}
-          </Formik>
-          {/* Button to navigate to SignupScreen to create a new account */}
-          <Button
-            style={styles.borderlessButtonContainer}
-            borderless
-            title={'Create a new account?'}
-            onPress={() => navigation.navigate('Signup')}
-          />
-          <Button
-            style={styles.borderlessButtonContainer}
-            borderless
-            title={'Forgot Password'}
-            onPress={() => navigation.navigate('ForgotPassword')}
-          />
-        </KeyboardAwareScrollView>
-      </View>
+            S M E N T R Y
+          </Text>
+          <Text
+            style={{
+              paddingBottom: 10,
+              paddingTop: 2,
+              fontSize: 20,
+              fontWeight: "600",
+            }}
+          >
+            Modern Surveillance Solution
+          </Text>
+          <Text style={styles.heading}>Sign In</Text>
+        </View>
 
-      {/* App info footer */}
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>
-          Expo Firebase Starter App (based on managed workflow)
-        </Text>
-      </View>
-    </>
+        <View style={styles.formContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            onChangeText={text => setEmail(text)}
+            value={email}
+          />
+
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            onChangeText={text => setPassword(text)}
+            value={password}
+            secureTextEntry
+          />
+
+          <TouchableOpacity style={styles.button}>
+            {loading ? (
+              <ActivityIndicator color="#ffffff" size="small" />
+            ) : (
+              <Text style={styles.buttonText} onPress={handleLogin}>
+                Sign In
+              </Text>
+            )}
+          </TouchableOpacity>
+        </View>
+        <View style={styles.footerContainer}>
+          <Text style={styles.footerText}>© 2023 Javeot Technologies</Text>
+        </View>
+      </KeyboardAvoidingView>
+    </RootSiblingParent>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.white,
-    paddingHorizontal: 12
+    backgroundColor: "#F5FCFF",
   },
-  logoContainer: {
-    alignItems: 'center'
+  headingContainer: {
+    alignItems: "center",
+    marginTop: 120,
+    marginBottom: 10,
   },
-  screenTitle: {
-    fontSize: 32,
-    fontWeight: '700',
-    color: Colors.black,
-    paddingTop: 20
+  heading: {
+    fontSize: 20,
+    // fontFamily: "Courier New",
+    paddingLeft: 10,
+    marginTop: 100,
+    paddingRight: 10,
+    textAlign: "center",
+    flexWrap: "wrap",
+    fontWeight: "600",
   },
-  footer: {
-    backgroundColor: Colors.white,
-    paddingHorizontal: 12,
-    paddingBottom: 48,
-    alignItems: 'center'
+  formContainer: {
+    alignItems: "center",
   },
-  footerText: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: Colors.orange
+  input: {
+    width: "80%",
+    height: 40,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    marginBottom: 10,
+    borderRadius: 8,
   },
   button: {
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 8,
-    backgroundColor: Colors.orange,
+    backgroundColor: "gray",
     padding: 10,
-    borderRadius: 8
+    width: "80%",
+    paddingLeft: 25,
+    paddingRight: 25,
+    borderRadius: 6,
   },
   buttonText: {
-    fontSize: 20,
-    color: Colors.white,
-    fontWeight: '700'
+    textAlign: "center",
+    color: "white",
+    fontSize: 16,
   },
-  borderlessButtonContainer: {
-    marginTop: 16,
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
+  footerContainer: {
+    alignItems: "center",
+    position: "absolute",
+    bottom: 20,
+    left: 0,
+    right: 0,
+  },
+  footerText: {
+    color: "#aaa",
+  },
 });
+
+export default LoginScreen;
