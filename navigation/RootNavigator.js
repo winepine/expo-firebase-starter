@@ -14,6 +14,7 @@ import AddStaffForm from "../components/ManageStaff/AddStaffForm";
 import AddVehicleForm from "../components/VehiclesScreen/AddVehicle";
 import AddResidentForm from "../components/AddResident";
 import Onboarding from "../screens/Onboarding";
+import App from "../screens/NotificationTest";
 
 const Stack = createNativeStackNavigator();
 const MyTheme = {
@@ -146,6 +147,7 @@ export const RootNavigator = () => {
             // headerLeft: () => <></>,
           }}
         />
+        <Stack.Screen name="not" component={App} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,9 +1,15 @@
 import "dotenv/config";
 
 export default {
+  updates: {
+    url: "https://u.expo.dev/47c6cce1-dcb0-4cc6-bdc0-cada8cc54bb2",
+  },
+  runtimeVersion: {
+    policy: "sdkVersion",
+  },
   expo: {
     name: "Smentry",
-    slug: "expo-firebase",
+    slug: "smentry-final",
     privacy: "public",
     platforms: ["ios", "android"],
     version: "0.15.0",
@@ -29,6 +35,7 @@ export default {
     assetBundlePatterns: ["**/*"],
     ios: {
       supportsTablet: true,
+      bundleIdentifier: "com.smentry.app",
     },
     extra: {
       apiKey: process.env.API_KEY,
@@ -37,6 +44,9 @@ export default {
       storageBucket: process.env.STORAGE_BUCKET,
       messagingSenderId: process.env.MESSAGING_SENDER_ID,
       appId: process.env.APP_ID,
+      eas: {
+        projectId: "47c6cce1-dcb0-4cc6-bdc0-cada8cc54bb2",
+      },
     },
   },
 };
