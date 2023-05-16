@@ -30,6 +30,7 @@ const AddResidentForm = () => {
         <TextInput
           style={styles.input}
           placeholder="CNIC"
+          placeholderTextColor={"#aaa"}
           onChangeText={text => setCnic(text)}
           value={cnic}
           onFocus={() => console.log("Input field focused")}
@@ -37,6 +38,7 @@ const AddResidentForm = () => {
         <TextInput
           style={styles.input}
           placeholder="Name"
+          placeholderTextColor={"#aaa"}
           onChangeText={text => setName(text)}
           value={name}
           onFocus={() => console.log("Input field focused")}
@@ -52,6 +54,19 @@ const AddResidentForm = () => {
             borderRadius: 6,
           }}
           onPress={async () => {
+            if (name === "" || cnic === "") {
+              alert("Please fill all the fields");
+              return;
+            }
+            if (cnic.length !== 13) {
+              alert("CNIC must be 13 digits");
+              return;
+            }
+            const regex = /\d/g;
+            if (regex.test(name)) {
+              alert("Name cannot contain numbers");
+              return;
+            }
             await addVehicle({
               ...house,
               residents: [

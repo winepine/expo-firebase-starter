@@ -17,7 +17,7 @@ const ManageNDelivery = () => {
       }}
     >
       <TouchableHighlight
-        style={{ ...styles.card, backgroundColor: "#3182CE" }}
+        style={{ ...styles.card, backgroundColor: "#283E51" }}
         onPress={() => navigate("ManageStaffScreen", {})}
         underlayColor="#aaa"
       >
@@ -43,7 +43,7 @@ const ManageNDelivery = () => {
         </View>
       </TouchableHighlight>
       <TouchableHighlight
-        style={{ ...styles.card, backgroundColor: "#3182CE" }}
+        style={{ ...styles.card, backgroundColor: "#283E51" }}
         //   onPress={onPress}
         onPress={() => navigate("DeliveryRequestsScreen", {})}
         underlayColor="#aaa"

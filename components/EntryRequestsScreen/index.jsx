@@ -10,14 +10,19 @@ import { useHouseDetails } from "../../contexts/useHouseData";
 
 const EntryRequestsScreen = () => {
   const { house } = useHouseDetails();
+  const [dummy, setDummy] = useState(false);
   const [requests, setRequests] = useState([]);
+  console.log({ requests });
   const getRequests = async () => {
-    const response = await getVisitorRequests(house.house_no, house.block);
+    let response = await getVisitorRequests(house.house_no, house.block);
+    // filter by status
+    response = response.filter(request => request.status === "Not Approved");
+    console.log({ response });
     setRequests(response);
   };
   useEffect(() => {
     getRequests();
-  }, []);
+  }, [dummy]);
   return (
     <View style={[styles.scene, { backgroundColor: "#fafafa" }]}>
       <Text
@@ -55,19 +60,41 @@ const EntryRequestsScreen = () => {
           </Text>
         </LinearGradient>
       </View>
+      {requests.length == 0 && (
+        <View
+          style={{
+            alignItems: "center",
+            marginTop: 20,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 20,
+              color: "#718096",
+              fontWeight: "700",
+            }}
+          >
+            No Requests
+          </Text>
+        </View>
+      )}
       <View
         style={{
           marginTop: 20,
         }}
       >
-        {requests.map((request, index) => (
-          <RequestBox
-            key={index}
-            name={request.name}
-            description={request.additional}
-            object={request}
-          />
-        ))}
+        {requests.map(
+          (request, index) =>
+            request.status == "Not Approved" && (
+              <RequestBox
+                key={index}
+                name={request.name}
+                description={request.additional}
+                object={request}
+                setDummy={setDummy}
+              />
+            )
+        )}
         {/* <RequestBox name="Abrar Hameed" description="Plumber/Electrician" />
         <RequestBox name="Basit Saeed" description="Relative" />
         <RequestBox name="Afaq Hameed" description="Bathroom Repair" /> */}

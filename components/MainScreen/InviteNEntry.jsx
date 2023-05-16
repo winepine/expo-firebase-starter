@@ -19,7 +19,7 @@ const InviteNEntry = () => {
       }}
     >
       <TouchableHighlight
-        style={{ ...styles.card, backgroundColor: "#3182CE" }}
+        style={{ ...styles.card, backgroundColor: "#283E51" }}
         onPress={() => navigate("Enter Visitor Details", {})}
         underlayColor="#aaa"
       >
@@ -47,7 +47,7 @@ const InviteNEntry = () => {
         </View>
       </TouchableHighlight>
       <TouchableHighlight
-        style={{ ...styles.card, backgroundColor: "#3182CE" }}
+        style={{ ...styles.card, backgroundColor: "#283E51" }}
         //   onPress={onPress}
         onPress={() => navigate("EntryRequestsScreen", {})}
         underlayColor="#aaa"

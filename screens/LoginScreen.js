@@ -36,12 +36,17 @@ const LoginScreen = () => {
     if (DbUser) {
       updateHouse(DbUser);
       toastText = "User Logged In Successfully.";
-      navigate("Smentry Home", {});
+      if (DbUser.status === "Not Active") {
+        navigate("Onboarding", {});
+      } else {
+        navigate("Smentry Home", {});
+      }
     }
     Toast.show(toastText, {
       duration: Toast.durations.LONG,
       backgroundColor: "gray",
     });
+    return;
   };
   return (
     <RootSiblingParent>
@@ -76,6 +81,7 @@ const LoginScreen = () => {
           <TextInput
             style={styles.input}
             placeholder="Email"
+            placeholderTextColor={"#aaa"}
             onChangeText={text => setEmail(text)}
             value={email}
           />
@@ -83,6 +89,7 @@ const LoginScreen = () => {
           <TextInput
             style={styles.input}
             placeholder="Password"
+            placeholderTextColor={"#aaa"}
             onChangeText={text => setPassword(text)}
             value={password}
             secureTextEntry
@@ -109,6 +116,7 @@ const LoginScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 60,
     backgroundColor: "#F5FCFF",
   },
   headingContainer: {

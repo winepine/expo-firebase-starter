@@ -11,7 +11,7 @@ const ScreenContainer = ({ children }) => (
 const styles = StyleSheet.create({
   scene: {
     flex: 1,
-    paddingTop: 60,
+    paddingTop: 20,
     justifyContent: "flex-start",
   },
 });

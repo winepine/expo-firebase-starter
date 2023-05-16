@@ -1,13 +1,12 @@
-import { StyleSheet, Text, TouchableHighlight, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View,
+  ScrollView,
+} from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-const dummyData = [
-  { id: 1, title: "Lulli Entered Without Permission" },
-  { id: 2, title: "Delivery Request Sent To Guard" },
-  { id: 4, title: "New Vehicle Added! FDA-231" },
-  { id: 3, title: "Delivery Request Sent To Guard" },
-  { id: 5, title: "You Approved Abrar Hameed Entry!" },
-  { id: 6, title: "New Vehicle Added! FDA-231" },
-];
+const dummyData = [];
 const Notifications = () => {
   return (
     <View
@@ -42,6 +41,32 @@ const Notifications = () => {
           Notifications
         </Text>
       </View>
+      {dummyData.length === 0 && (
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            marginLeft: 10,
+            padding: 20,
+            paddingBottom: 20,
+            paddingTop: 30,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 18,
+              flexWrap: "wrap",
+              fontWeight: "600",
+              marginLeft: 10,
+              color: "#718096",
+            }}
+          >
+            No Notifications :)
+          </Text>
+        </View>
+      )}
       {dummyData.map((item, key) => (
         <TouchableHighlight
           key={key}

@@ -1,14 +1,17 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import deleteDoc from "../../services/deleteDoc";
 
-const DeliveryBox = ({ name, description, status }) => {
+const DeliveryBox = ({ name, description, status, docId }) => {
   return (
     <LinearGradient
       colors={
-        status == "active"
-          ? ["#9B2C2C", "#C53030", "#F56565"]
-          : ["#1A365D", "#2B6CB0", "#63B3ED", "#4299E1"]
+        status == "Pending"
+          ? ["#4B79A1", "#283E51"]
+          : status == "Cancelled"
+          ? ["#D3494E", "#D3494E"]
+          : ["#2C7744", "#2C7744"]
       }
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
@@ -20,9 +23,12 @@ const DeliveryBox = ({ name, description, status }) => {
         <Text style={styles.description}>{description}</Text>
       </View>
       <View style={styles.rightContainer}>
-        {status == "active" ? (
+        {status == "Pending" ? (
           <TouchableOpacity
             style={{ ...styles.button, backgroundColor: "#F56565" }}
+            onPress={async () => {
+              await deleteDoc(docId);
+            }}
           >
             {/* <Ionicons name="close-sharp" size={24} color="white" /> */}
             <Text
@@ -30,7 +36,7 @@ const DeliveryBox = ({ name, description, status }) => {
                 color: "white",
               }}
             >
-              Cancel
+              Cancel Request
             </Text>
           </TouchableOpacity>
         ) : (

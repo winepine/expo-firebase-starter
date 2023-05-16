@@ -14,7 +14,7 @@ const CarCard = ({ plate, car, description, type }) => {
       underlayColor="#ebebeb"
     >
       <LinearGradient
-        colors={type == "car" ? ["#00d2ff", "#928DAB"] : ["#4DA0B0", "#D39D38"]}
+        colors={type == "car" ? ["#4B79A1", "#283E51"] : ["#4DA0B0", "#D39D38"]}
         style={styles.gradient}
       >
         <View

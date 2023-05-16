@@ -1,13 +1,8 @@
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../config/firebase";
+
 const addInvite = async inviteObject => {
-  //   try {
-  //     firestore()
-  //       .collection("invites")
-  //       .add(inviteObject)
-  //       .then(() => {
-  //         console.log("Invite Added Successfully!");
-  //       });
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
+  const colRef = collection(db, "invites");
+  const ref = await addDoc(colRef, inviteObject);
 };
 export { addInvite };

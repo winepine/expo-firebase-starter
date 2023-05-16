@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
+import { serverTimestamp } from "firebase/firestore";
 import {
   StyleSheet,
   Text,
@@ -9,9 +10,12 @@ import {
 } from "react-native";
 import Header from "../Header";
 import ScreenContainer from "../ScreenContainer";
-
+import addDeliveryRequest from "../../services/addDeliveryRequest";
+import { useHouseDetails } from "../../contexts/useHouseData";
 const AddDeliveryForm = () => {
   const { navigate } = useNavigation();
+  const { house } = useHouseDetails();
+  const [storeName, setStoreName] = useState("");
   return (
     <ScreenContainer>
       <Header text="Request A New Delivery" />
@@ -23,9 +27,10 @@ const AddDeliveryForm = () => {
         }}
       >
         <TextInput
+          placeholderTextColor={"#aaa"}
           style={styles.input}
           placeholder="Store Name"
-          // onChangeText={text => setEmail(text)}
+          onChangeText={text => setStoreName(text)}
           // value={email}
           onFocus={() => console.log("Input field focused")}
         />
@@ -39,7 +44,24 @@ const AddDeliveryForm = () => {
             paddingRight: 25,
             borderRadius: 6,
           }}
-          onPress={() => navigate("DeliveryRequestsScreen", {})}
+          onPress={async () => {
+            if (storeName === "") return alert("Please enter a store name");
+            // if special characters are present in store name
+            if (storeName.match(/[^a-zA-Z0-9 ]/g))
+              return alert("Please enter a valid store name");
+
+            await addDeliveryRequest({
+              store_name: storeName,
+              house_no: {
+                house: house.house_no,
+                block: house.block,
+              },
+              status: "Pending",
+              dismissed: false,
+              timestamp: serverTimestamp(),
+            });
+            navigate("DeliveryRequestsScreen", {});
+          }}
         >
           <Text
             style={{

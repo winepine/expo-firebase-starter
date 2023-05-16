@@ -10,7 +10,7 @@ const InfoPopup = ({ infoText }) => {
       }}
     >
       <LinearGradient
-        colors={["#4299E1", "#3182CE", "#2B6CB0"]}
+        colors={["#4B79A1", "#283E51"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.container}

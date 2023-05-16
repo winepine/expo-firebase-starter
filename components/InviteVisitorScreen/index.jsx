@@ -46,6 +46,7 @@ const InviteVisitorScreen = () => {
           }}
         >
           <TextInput
+            placeholderTextColor={"#aaa"}
             style={styles.input}
             placeholder="Name"
             onChangeText={text => setName(text)}
@@ -54,6 +55,7 @@ const InviteVisitorScreen = () => {
           />
           <TextInput
             style={styles.input}
+            placeholderTextColor={"#aaa"}
             placeholder="Numberplate (Optional)"
             onChangeText={text => setNumberplate(text)}
             value={numberplate}
@@ -70,6 +72,14 @@ const InviteVisitorScreen = () => {
         >
           <TouchableOpacity
             onPress={async () => {
+              // use this regex for matching numberplates ^[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}$
+
+              if (name.match(/[0-9]/g))
+                return alert("Please enter a valid name");
+              if (name === "") return alert("Please enter a name");
+              if (numberplate === "")
+                return alert("Please enter a valid numberplate");
+
               await addInvite({
                 name,
                 numberplate,
@@ -82,7 +92,7 @@ const InviteVisitorScreen = () => {
               navigate("Smentry Home", {});
             }}
             style={{
-              backgroundColor: "#4299E1",
+              backgroundColor: "#48BB78",
               padding: 10,
               width: "90%",
               paddingLeft: 25,
@@ -100,7 +110,8 @@ const InviteVisitorScreen = () => {
               Submit
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity
+
+          {/* <TouchableOpacity
             style={{
               backgroundColor: "#F56565",
               padding: 10,
@@ -121,7 +132,7 @@ const InviteVisitorScreen = () => {
             >
               Back
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </KeyboardAvoidingView>
       {/* <Button title="Back" } /> */}

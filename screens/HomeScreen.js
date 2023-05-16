@@ -6,6 +6,8 @@ import {
   Dimensions,
   TouchableHighlight,
   Button,
+  ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import FirstRoute from "../components/MainScreen";
@@ -15,135 +17,203 @@ import CarCard from "../components/VehiclesScreen/CarCard";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useHouseDetails } from "../contexts/useHouseData";
+import { defaultGreen } from "../constants/colors";
 const FourthRoute = () => {
   const { navigate } = useNavigation();
   const { house } = useHouseDetails();
   console.log(house.vehicles);
   return (
-    <View
-      style={[styles.scene, { backgroundColor: "#E6E6EA", paddingBottom: 10 }]}
-    >
-      <Text
-        style={{
-          fontSize: 32,
-          padding: 20,
-          paddingBottom: 10,
-          flexWrap: "wrap",
-          fontWeight: "700",
-        }}
-      >
-        Profile
-      </Text>
+    <ScrollView>
       <View
-        style={{
-          marginTop: 20,
-        }}
+        style={[
+          styles.scene,
+          { backgroundColor: "#E6E6EA", paddingBottom: 10 },
+        ]}
       >
-        {house.residents.map((resident, idx) => (
-          <TouchableHighlight
-            style={styles.card}
-            // onPress={() => navigate("AddVehicleScreen", {})}
-            underlayColor="#ebebeb"
+        <Text
+          style={{
+            fontSize: 32,
+            padding: 20,
+            paddingBottom: 10,
+            flexWrap: "wrap",
+            fontWeight: "700",
+          }}
+        >
+          Residents
+        </Text>
+        <View
+          style={{
+            marginTop: 20,
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#48BB78",
+              padding: 10,
+              marginTop: 4,
+              marginLeft: "5%",
+              width: "90%",
+              height: 50,
+              justifyContent: "center",
+              paddingLeft: 25,
+              paddingRight: 25,
+              borderRadius: 6,
+              marginBottom: 10,
+            }}
+            onPress={() => navigate("AddResidentScreen", {})}
           >
-            <LinearGradient
-              colors={["#98A398", "#48CB78", "#5A865A"]}
-              style={styles.gradient}
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "row",
+              }}
             >
+              <Ionicons name="add-circle" size={24} color="white" />
+
+              <Text
+                style={{
+                  textAlign: "center",
+                  color: "white",
+                  fontSize: 16,
+                  marginLeft: 10,
+                }}
+              >
+                Add Resident
+              </Text>
+            </View>
+          </TouchableOpacity>
+
+          {house.residents.map((resident, idx) => (
+            <TouchableHighlight
+              key={idx}
+              style={styles.card}
+              // onPress={() => navigate("AddVehicleScreen", {})}
+              underlayColor="#ebebeb"
+            >
+              <LinearGradient
+                colors={["#4B79A1", "#283E51"]}
+                style={styles.gradient}
+              >
+                <View
+                  style={{
+                    justifyContent: "center",
+                    // alignItems: "center",
+                  }}
+                >
+                  <Text style={{ ...styles.title, fontSize: 22 }}>
+                    {resident.name}
+                  </Text>
+                  <Text style={{ ...styles.title, fontWeight: "400" }}>
+                    {resident.cnic}
+                  </Text>
+                </View>
+              </LinearGradient>
+            </TouchableHighlight>
+          ))}
+
+          {/* <TouchableHighlight
+            style={styles.card}
+            onPress={() => navigate("AddResidentScreen", {})}
+            underlayColor="#ebebeb"
+            backgroundColor
+          >
+            <LinearGradient colors={[defaultGreen]} style={styles.gradient}>
               <View
                 style={{
                   justifyContent: "center",
                   alignItems: "center",
                 }}
               >
-                <Text style={{ ...styles.title, fontSize: 24 }}>
-                  {resident.name}
-                </Text>
-                <Text style={styles.title}>{resident.cnic}</Text>
+                <Ionicons name="add-circle" size={24} color="white" />
+
+                <Text style={styles.title}>{"Add Resident"}</Text>
               </View>
             </LinearGradient>
-          </TouchableHighlight>
-        ))}
-        <TouchableHighlight
-          style={styles.card}
-          onPress={() => navigate("AddResidentScreen", {})}
-          underlayColor="#ebebeb"
-        >
-          <LinearGradient
-            colors={["#68F391", "#489B78", "#2F855A"]}
-            style={styles.gradient}
-          >
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Ionicons name="add-circle" size={24} color="white" />
-
-              <Text style={styles.title}>{"Add Resident"}</Text>
-            </View>
-          </LinearGradient>
-        </TouchableHighlight>
+          </TouchableHighlight> */}
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 const SecondRoute = () => {
   const { navigate } = useNavigation();
   const { house } = useHouseDetails();
   console.log(house.vehicles);
+
   return (
-    <View
-      style={[styles.scene, { backgroundColor: "#E6E6EA", paddingBottom: 10 }]}
-    >
-      <Text
-        style={{
-          fontSize: 32,
-          padding: 20,
-          paddingBottom: 10,
-          flexWrap: "wrap",
-          fontWeight: "700",
-        }}
-      >
-        Profile
-      </Text>
+    <ScrollView>
       <View
-        style={{
-          marginTop: 20,
-        }}
+        style={[
+          styles.scene,
+          { backgroundColor: "#E6E6EA", paddingBottom: 10 },
+        ]}
       >
-        {house.vehicles.map((vehicle, idx) => (
-          <CarCard
-            plate={vehicle.numberplate}
-            description={vehicle.name}
-            car={"Car/Bike"}
-            type={"car"}
-            key={idx}
-          />
-        ))}
-        <TouchableHighlight
-          style={styles.card}
-          onPress={() => navigate("AddVehicleScreen", {})}
-          underlayColor="#ebebeb"
+        <Text
+          style={{
+            fontSize: 32,
+            padding: 20,
+            paddingBottom: 10,
+            flexWrap: "wrap",
+            fontWeight: "700",
+          }}
         >
-          <LinearGradient
-            colors={["#68D391", "#48BB78", "#2F855A"]}
-            style={styles.gradient}
+          Vehicles
+        </Text>
+        <View
+          style={{
+            marginTop: 20,
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#48BB78",
+              padding: 10,
+              marginTop: 4,
+              marginLeft: "5%",
+              width: "90%",
+              height: 50,
+              justifyContent: "center",
+              paddingLeft: 25,
+              paddingRight: 25,
+              borderRadius: 6,
+              marginBottom: 10,
+            }}
+            onPress={() => navigate("AddVehicleScreen", {})}
           >
             <View
               style={{
                 justifyContent: "center",
                 alignItems: "center",
+                flexDirection: "row",
               }}
             >
               <Ionicons name="add-circle" size={24} color="white" />
 
-              <Text style={styles.title}>{"Add Vehicle"}</Text>
+              <Text
+                style={{
+                  textAlign: "center",
+                  color: "white",
+                  fontSize: 16,
+                  marginLeft: 10,
+                }}
+              >
+                Add Vehicle
+              </Text>
             </View>
-          </LinearGradient>
-        </TouchableHighlight>
+          </TouchableOpacity>
+          {house.vehicles.map((vehicle, idx) => (
+            <CarCard
+              plate={vehicle.numberplate}
+              description={vehicle.name}
+              car={"Car/Bike"}
+              type={"car"}
+              key={idx}
+            />
+          ))}
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -164,7 +234,43 @@ const ThirdRoute = () => {
       >
         Settings
       </Text>
-      <Button title="Logout" onPress={() => navigate("Login", {})} />
+      <TouchableOpacity
+        style={{
+          backgroundColor: 'color: "rgba(0, 0, 0, 0.5)',
+          padding: 10,
+          marginTop: 4,
+          width: "90%",
+          marginLeft: "5%",
+          height: 50,
+          justifyContent: "center",
+          paddingLeft: 25,
+          paddingRight: 25,
+          borderRadius: 6,
+        }}
+        onPress={() => navigate("Login", {})}
+      >
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "row",
+          }}
+        >
+          <Ionicons name="log-out-outline" size={24} color="white" />
+
+          <Text
+            style={{
+              textAlign: "center",
+              color: "white",
+              fontSize: 16,
+              marginLeft: 10,
+            }}
+          >
+            Logout
+          </Text>
+        </View>
+      </TouchableOpacity>
+      {/* <Button title="Logout" /> */}
     </View>
   );
 };
@@ -176,7 +282,7 @@ const renderScene = SceneMap({
   third: ThirdRoute,
 });
 
-const renderTabBar = (props: any) => (
+const renderTabBar = props => (
   <TabBar
     {...props}
     indicatorStyle={{ backgroundColor: "#000" }}

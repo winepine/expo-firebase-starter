@@ -1,3 +1,4 @@
+import { serverTimestamp } from "firebase/firestore";
 import { useState } from "react";
 import {
   Alert,
@@ -9,9 +10,12 @@ import {
   View,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { useHouseDetails } from "../../contexts/useHouseData";
+import { AddAlertSos } from "../../services/addSos";
 
 const AlertSos = () => {
   const [modalVisible, setModalVisible] = useState(false);
+  const { house } = useHouseDetails();
   return (
     <View
       style={{
@@ -84,7 +88,17 @@ const AlertSos = () => {
                 styles.buttonClose,
                 { marginTop: 30, backgroundColor: "#E53E3E" },
               ]}
-              onPress={() => setModalVisible(!modalVisible)}
+              onPress={async () => {
+                await AddAlertSos({
+                  house_no: {
+                    house: house.house_no,
+                    block: house.block,
+                  },
+                  dismissed: false,
+                  createdAt: serverTimestamp(),
+                });
+                setModalVisible(!modalVisible);
+              }}
             >
               <Text style={styles.textStyle}>Proceed</Text>
             </Pressable>

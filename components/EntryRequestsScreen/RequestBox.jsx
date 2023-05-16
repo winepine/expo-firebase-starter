@@ -1,11 +1,12 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import updateRequest from "../../services/updateRequest";
 
-const RequestBox = ({ name, description, object }) => {
+const RequestBox = ({ name, description, object, setDummy }) => {
   return (
     <LinearGradient
-      colors={["#1A365D", "#2B6CB0", "#63B3ED", "#4299E1"]}
+      colors={["#4B79A1", "#283E51"]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.container}
@@ -16,11 +17,21 @@ const RequestBox = ({ name, description, object }) => {
         <Text style={styles.description}>{description}</Text>
       </View>
       <View style={styles.rightContainer}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          onPress={async () => {
+            await updateRequest(object.id, "Approved");
+            setDummy(prev => !prev);
+          }}
+          style={styles.button}
+        >
           <Ionicons name="checkmark-sharp" size={24} color="white" />
         </TouchableOpacity>
         <TouchableOpacity
           style={{ ...styles.button, backgroundColor: "#F56565" }}
+          onPress={async () => {
+            await updateRequest(object.id, "Denied");
+            setDummy(prev => !prev);
+          }}
         >
           <Ionicons name="close-sharp" size={24} color="white" />
         </TouchableOpacity>

@@ -29,7 +29,8 @@ const AddVehicleForm = () => {
       >
         <TextInput
           style={styles.input}
-          placeholder="Numberplate"
+          placeholderTextColor={"#aaa"}
+          placeholder="Number Plate"
           onChangeText={text => setNumberplate(text)}
           value={numberplate}
           onFocus={() => console.log("Input field focused")}
@@ -37,6 +38,7 @@ const AddVehicleForm = () => {
         <TextInput
           style={styles.input}
           placeholder="Name"
+          placeholderTextColor={"#aaa"}
           onChangeText={text => setName(text)}
           value={name}
           onFocus={() => console.log("Input field focused")}

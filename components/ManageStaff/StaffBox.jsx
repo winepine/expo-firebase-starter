@@ -1,29 +1,60 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { StyleSheet, Text, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableHighlight,
+} from "react-native";
 
-const StaffBox = ({ name }) => {
+const StaffBox = ({ name, cnic, contact, image }) => {
   return (
-    <LinearGradient
-      colors={["#1A365D", "#2B6CB0", "#63B3ED", "#4299E1"]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      style={styles.container}
+    <TouchableHighlight
+      style={styles.card}
+      //   onPress={onPress}
+      underlayColor="#ebebeb"
     >
-      {/* <View style={styles.container}> */}
-      <View style={styles.leftContainer}>
-        <Text style={styles.name}>{name}</Text>
+      <LinearGradient colors={["#4B79A1", "#283E51"]} style={styles.gradient}>
         <View
           style={{
-            marginTop: 10,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          <Text style={styles.description}>{"CNIC: 33010-9022981-0"}</Text>
-          <Text style={styles.description}>{"Contact No. 03177800709"}</Text>
+          <View>
+            <Text style={{ fontSize: 28, fontWeight: "800", color: "#fafafa" }}>
+              {name}
+            </Text>
+            <Text style={styles.title}>CNIC: {cnic}</Text>
+            <Text style={styles.description}>Contact No. {contact}</Text>
+          </View>
+
+          <Image style={styles.logo} source={{ uri: image }} />
         </View>
-      </View>
-      <View style={styles.rightContainer}></View>
-      {/* </View> */}
-    </LinearGradient>
+      </LinearGradient>
+    </TouchableHighlight>
+    // <LinearGradient
+    //   colors={["#1A365D", "#2B6CB0", "#63B3ED", "#4299E1"]}
+    //   start={{ x: 0, y: 0 }}
+    //   end={{ x: 1, y: 1 }}
+    //   style={styles.container}
+    // >
+    //   {/* <View style={styles.container}> */}
+    //   <View style={styles.leftContainer}>
+    //     <Text style={styles.name}>{name}</Text>
+    //     <View
+    //       style={{
+    //         marginTop: 10,
+    //       }}
+    //     >
+    //       <Text style={styles.description}>CNIC: {cnic}</Text>
+    //       <Text style={styles.description}>Contact No. {contact}</Text>
+    //     </View>
+    //   </View>
+    //   <View style={styles.rightContainer}></View>
+    //   {/* </View> */}
+    // </LinearGradient>
   );
 };
 const styles = StyleSheet.create({
@@ -67,6 +98,43 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginHorizontal: 2,
+  },
+  card: {
+    backgroundColor: "#ffffff",
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "flex-start",
+    // marginLeft: "5%",
+    width: "95%",
+    marginBottom: 10,
+    marginTop: 0,
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  title: {
+    fontSize: 14,
+    fontWeight: "bold",
+    marginBottom: 0,
+    color: "#fafafa",
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+  },
+
+  gradient: {
+    padding: 20,
+    width: "100%",
+    borderRadius: 10,
+  },
+  logo: {
+    width: 100,
+    height: 70,
+
+    borderRadius: 20,
   },
 });
 export default StaffBox;
