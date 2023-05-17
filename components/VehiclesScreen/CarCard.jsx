@@ -4,9 +4,13 @@ import {
   StyleSheet,
   Text,
   TouchableHighlight,
+  TouchableOpacity,
   View,
 } from "react-native";
-const CarCard = ({ plate, car, description, type }) => {
+import deleteVehicles from "../../services/deleteVehicle";
+import { useHouseDetails } from "../../contexts/useHouseData";
+const CarCard = ({ plate, car, description, type, allVehicles, docId }) => {
+  const { updateVehicles } = useHouseDetails();
   return (
     <TouchableHighlight
       style={styles.card}
@@ -30,6 +34,32 @@ const CarCard = ({ plate, car, description, type }) => {
             </Text>
             <Text style={styles.title}>{car}</Text>
             <Text style={styles.description}>{description}</Text>
+            <TouchableOpacity
+              style={{
+                ...styles.button,
+                backgroundColor: "#F56565",
+                padding: 6,
+                marginTop: 10,
+                width: 50,
+                borderRadius: 5,
+              }}
+              onPress={async () => {
+                const updatedVehicles = allVehicles.filter(
+                  vehicle => vehicle.numberplate !== plate
+                );
+                updateVehicles(updatedVehicles);
+                await deleteVehicles(allVehicles, plate, docId);
+              }}
+            >
+              {/* <Ionicons name="close-sharp" size={24} color="white" /> */}
+              <Text
+                style={{
+                  color: "white",
+                }}
+              >
+                Delete
+              </Text>
+            </TouchableOpacity>
           </View>
           {type == "car" ? (
             <Image

@@ -15,6 +15,9 @@ import InfoPopup from "../InfoPopup";
 import { useState } from "react";
 import { addInvite } from "../../services/addInvite";
 import { useHouseDetails } from "../../contexts/useHouseData";
+import { AddNotification } from "../../services/addNotification";
+import { createdAt } from "expo-updates";
+import { serverTimestamp } from "firebase/firestore";
 
 const InviteVisitorScreen = () => {
   const { navigate } = useNavigation();
@@ -77,9 +80,13 @@ const InviteVisitorScreen = () => {
               if (name.match(/[0-9]/g))
                 return alert("Please enter a valid name");
               if (name === "") return alert("Please enter a name");
-              if (numberplate === "")
-                return alert("Please enter a valid numberplate");
-
+              await AddNotification({
+                house_no: house.house_no,
+                block: house.block,
+                text: `${name} Invited by ${house.house_no}-${house.block}`,
+                createdAt: serverTimestamp(),
+                type: "success",
+              });
               await addInvite({
                 name,
                 numberplate,
@@ -89,6 +96,7 @@ const InviteVisitorScreen = () => {
                 },
                 additional: "",
               });
+
               navigate("Smentry Home", {});
             }}
             style={{

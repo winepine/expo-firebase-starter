@@ -40,7 +40,21 @@ const DeliveryBox = ({ name, description, status, docId }) => {
             </Text>
           </TouchableOpacity>
         ) : (
-          <></>
+          <TouchableOpacity
+            style={{ ...styles.button, backgroundColor: "#F56565" }}
+            onPress={async () => {
+              await deleteDoc(docId);
+            }}
+          >
+            {/* <Ionicons name="close-sharp" size={24} color="white" /> */}
+            <Text
+              style={{
+                color: "white",
+              }}
+            >
+              Dismiss
+            </Text>
+          </TouchableOpacity>
         )}
       </View>
       {/* </View> */}

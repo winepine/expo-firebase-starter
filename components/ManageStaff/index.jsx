@@ -18,7 +18,7 @@ const ManageStaff = () => {
   };
   useEffect(() => {
     getAllHouseStaff();
-  }, []);
+  });
   return (
     <ScreenContainer>
       <ScrollView>
@@ -50,6 +50,7 @@ const ManageStaff = () => {
               cnic={staff.cnic}
               contact={staff.contact_no}
               image={staff.image}
+              id={staff.id}
               key={idx}
             />
           ))}

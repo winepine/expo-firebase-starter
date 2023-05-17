@@ -50,17 +50,17 @@ const DeliveryRequests = () => {
             }}
           >
             {requests.map((request, index) => {
-              if (request.status === "Pending") {
-                return (
-                  <DeliveryBox
-                    key={index}
-                    name={request.store_name}
-                    docId={request.id}
-                    description={`Status: ${request.status}`}
-                    status={request.status}
-                  />
-                );
-              }
+              // if (request.status === "Pending") {
+              return (
+                <DeliveryBox
+                  key={index}
+                  name={request.store_name}
+                  docId={request.id}
+                  description={`Status: ${request.status}`}
+                  status={request.status}
+                />
+              );
+              // }
             })}
           </View>
         </View>

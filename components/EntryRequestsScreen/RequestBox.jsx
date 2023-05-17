@@ -2,8 +2,12 @@ import { LinearGradient } from "expo-linear-gradient";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import updateRequest from "../../services/updateRequest";
+import { useHouseDetails } from "../../contexts/useHouseData";
+import { AddNotification } from "../../services/addNotification";
+import { serverTimestamp } from "firebase/firestore";
 
 const RequestBox = ({ name, description, object, setDummy }) => {
+  const { house } = useHouseDetails();
   return (
     <LinearGradient
       colors={["#4B79A1", "#283E51"]}
@@ -20,6 +24,13 @@ const RequestBox = ({ name, description, object, setDummy }) => {
         <TouchableOpacity
           onPress={async () => {
             await updateRequest(object.id, "Approved");
+            await AddNotification({
+              house_no: house.house_no,
+              block: house.block,
+              text: `${name} Approved Entry`,
+              createdAt: serverTimestamp(),
+              type: "success",
+            });
             setDummy(prev => !prev);
           }}
           style={styles.button}
@@ -30,6 +41,14 @@ const RequestBox = ({ name, description, object, setDummy }) => {
           style={{ ...styles.button, backgroundColor: "#F56565" }}
           onPress={async () => {
             await updateRequest(object.id, "Denied");
+            await AddNotification({
+              house_no: house.house_no,
+              block: house.block,
+              text: `${name} Denied Entry`,
+              createdAt: serverTimestamp(),
+              type: "success",
+            });
+            setDummy(prev => !prev);
             setDummy(prev => !prev);
           }}
         >

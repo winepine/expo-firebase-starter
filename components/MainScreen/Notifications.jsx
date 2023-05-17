@@ -1,4 +1,12 @@
 import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  Unsubscribe,
+} from "firebase/firestore";
+import { useEffect, useState } from "react";
+import {
   StyleSheet,
   Text,
   TouchableHighlight,
@@ -6,8 +14,30 @@ import {
   ScrollView,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { db } from "../../config/firebase";
+import { useHouseDetails } from "../../contexts/useHouseData";
 const dummyData = [];
 const Notifications = () => {
+  const [Notifications, setNotifications] = useState([]);
+  const { house } = useHouseDetails();
+  useEffect(() => {
+    const colRef = collection(db, "notifications");
+    const DBQuery = query(colRef, orderBy("createdAt", "desc"));
+    const unsub = onSnapshot(DBQuery, snapshot => {
+      let Notifications = [];
+      snapshot.docs.forEach(doc => {
+        if (
+          doc.data().house_no == house.house_no &&
+          doc.data().block == house.block
+        ) {
+          Notifications.push(doc.data());
+        }
+      });
+
+      setNotifications(Notifications);
+    });
+    return unsub;
+  }, []);
   return (
     <View
       style={{
@@ -41,7 +71,7 @@ const Notifications = () => {
           Notifications
         </Text>
       </View>
-      {dummyData.length === 0 && (
+      {Notifications.length === 0 && (
         <View
           style={{
             display: "flex",
@@ -67,7 +97,7 @@ const Notifications = () => {
           </Text>
         </View>
       )}
-      {dummyData.map((item, key) => (
+      {Notifications.map((item, key) => (
         <TouchableHighlight
           key={key}
           style={{
@@ -114,17 +144,19 @@ const Notifications = () => {
                   maxWidth: 280,
                 }}
               >
-                {item.title}
+                {item.text}
               </Text>
-              <Text
+              {/* <Text
                 style={{
                   marginLeft: 15,
                   color: "white",
                   fontWeight: "400",
                 }}
               >
-                2 hours ago
-              </Text>
+                {new Date(item.createdAt.seconds * 1000)
+                  .toString()
+                  .substring(4, 25)}
+              </Text> */}
             </View>
           </View>
         </TouchableHighlight>

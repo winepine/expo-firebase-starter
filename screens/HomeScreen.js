@@ -18,9 +18,10 @@ import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useHouseDetails } from "../contexts/useHouseData";
 import { defaultGreen } from "../constants/colors";
+import deleteResidents from "../services/updateResidents";
 const FourthRoute = () => {
   const { navigate } = useNavigation();
-  const { house } = useHouseDetails();
+  const { house, updateResidents } = useHouseDetails();
   console.log(house.vehicles);
   return (
     <ScrollView>
@@ -107,6 +108,33 @@ const FourthRoute = () => {
                   <Text style={{ ...styles.title, fontWeight: "400" }}>
                     {resident.cnic}
                   </Text>
+                  <TouchableOpacity
+                    style={{
+                      ...styles.button,
+                      backgroundColor: "#F56565",
+                      padding: 10,
+                      marginTop: 10,
+                      borderRadius: 6,
+                      width: 90,
+                    }}
+                    onPress={async () => {
+                      const updatedVehicles = house.residents.filter(
+                        houset => houset.cnic !== resident.cnic
+                      );
+                      updateResidents(updatedVehicles);
+                      deleteResidents(house.residents, resident.cnic, house.id);
+                      // await deleteStaff(id);
+                    }}
+                  >
+                    {/* <Ionicons name="close-sharp" size={24} color="white" /> */}
+                    <Text
+                      style={{
+                        color: "white",
+                      }}
+                    >
+                      Delete Staff
+                    </Text>
+                  </TouchableOpacity>
                 </View>
               </LinearGradient>
             </TouchableHighlight>
@@ -209,6 +237,8 @@ const SecondRoute = () => {
               car={"Car/Bike"}
               type={"car"}
               key={idx}
+              allVehicles={house.vehicles}
+              docId={house.id}
             />
           ))}
         </View>

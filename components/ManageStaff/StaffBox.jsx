@@ -5,9 +5,11 @@ import {
   View,
   Image,
   TouchableHighlight,
+  TouchableOpacity,
 } from "react-native";
+import deleteStaff from "../../services/deleteStaff";
 
-const StaffBox = ({ name, cnic, contact, image }) => {
+const StaffBox = ({ name, cnic, contact, image, id }) => {
   return (
     <TouchableHighlight
       style={styles.card}
@@ -30,7 +32,22 @@ const StaffBox = ({ name, cnic, contact, image }) => {
             <Text style={styles.description}>Contact No. {contact}</Text>
           </View>
 
-          <Image style={styles.logo} source={{ uri: image }} />
+          {/* <Image style={styles.logo} source={{ uri: image }} /> */}
+          <TouchableOpacity
+            style={{ ...styles.button, backgroundColor: "#F56565" }}
+            onPress={async () => {
+              await deleteStaff(id);
+            }}
+          >
+            {/* <Ionicons name="close-sharp" size={24} color="white" /> */}
+            <Text
+              style={{
+                color: "white",
+              }}
+            >
+              Delete Staff
+            </Text>
+          </TouchableOpacity>
         </View>
       </LinearGradient>
     </TouchableHighlight>

@@ -7,11 +7,16 @@ import {
   Dimensions,
   TouchableOpacity,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 import { useHouseDetails } from "../contexts/useHouseData";
+import { updatePassword } from "../services/updatePassword";
 const Onboarding = () => {
   const { navigate } = useNavigation();
   const { house } = useHouseDetails();
+  const [password, setPassword] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
   return (
     <View style={styles.container}>
       {/* <ImageBackground
@@ -66,8 +71,9 @@ const Onboarding = () => {
           }}
           placeholder="Password"
           placeholderTextColor={"#aaa"}
-          // onChangeText={text => setEmail(text)}
-          // value={email}
+          secureTextEntry
+          onChangeText={text => setPassword(text)}
+          value={password}
         />
         <TextInput
           style={{
@@ -80,9 +86,10 @@ const Onboarding = () => {
             // margin: 10,
           }}
           placeholder="Confirm Password"
+          secureTextEntry
           placeholderTextColor={"#aaa"}
-          // onChangeText={text => setEmail(text)}
-          // value={email}
+          onChangeText={text => setConfirmPassword(text)}
+          value={confirmPassword}
         />
         <TouchableOpacity
           style={{
@@ -94,10 +101,24 @@ const Onboarding = () => {
             height: 40,
             justifyContent: "center",
             paddingLeft: 25,
+
             paddingRight: 25,
             borderRadius: 6,
           }}
-          onPress={() => navigate("Smentry Home", {})}
+          onPress={async () => {
+            setLoading(true);
+            if (password !== confirmPassword) {
+              alert("Passwords do not match");
+              return;
+            }
+            if (password.length < 6) {
+              alert("Password must be at least 6 characters long");
+              return;
+            }
+            await updatePassword(password, house.id);
+            setLoading(false);
+            navigate("Smentry Home", {});
+          }}
         >
           <View
             style={{
@@ -106,16 +127,11 @@ const Onboarding = () => {
               flexDirection: "row",
             }}
           >
-            <Text
-              style={{
-                textAlign: "center",
-                color: "white",
-                fontSize: 16,
-                marginLeft: 10,
-              }}
-            >
-              Create Account
-            </Text>
+            {loading ? (
+              <ActivityIndicator color="#ffffff" size="small" />
+            ) : (
+              <Text style={styles.buttonText}>Create Account</Text>
+            )}
           </View>
         </TouchableOpacity>
       </View>

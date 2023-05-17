@@ -30,7 +30,7 @@ const AddVehicleForm = () => {
         <TextInput
           style={styles.input}
           placeholderTextColor={"#aaa"}
-          placeholder="Number Plate"
+          placeholder="Number Plate As Shown On The Car"
           onChangeText={text => setNumberplate(text)}
           value={numberplate}
           onFocus={() => console.log("Input field focused")}

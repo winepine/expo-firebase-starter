@@ -8,7 +8,7 @@ const verifyUserLogin = async (email, password) => {
     if (doc.data().owner_name == email && doc.data().password == password) {
       console.log("User Found");
       console.log(doc.data());
-      user = doc.data();
+      user = { ...doc.data(), id: doc.id };
     }
   });
   return user;
